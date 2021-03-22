@@ -6,6 +6,7 @@ function App() {
   const [listings, setListings] = useState([])
   const [ searchTerm, setSearchTerm] = useState('')
   const [filter, setFilter] = useState([])
+  // I've come to the same conclusion twice so far that the filterArray is required when creating the search bar feature. 
   console.log(searchTerm)
 
   // console.log(listings)
@@ -35,8 +36,6 @@ function App() {
     } else { fetchAPI()}
 
   }
-
-
 
   return (
     <div className="app">
