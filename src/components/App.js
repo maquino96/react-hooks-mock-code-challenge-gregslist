@@ -4,14 +4,21 @@ import ListingsContainer from "./ListingsContainer";
 
 function App() {
   const [listings, setListings] = useState([])
-  console.log(listings)
+  const [ searchTerm, setSearchTerm] = useState('')
+  const [filter, setFilter] = useState([])
+  console.log(searchTerm)
+
+  // console.log(listings)
 
   useEffect(() => {
-    fetch(`http://localhost:6001/listings`)
-      .then( r => r.json())
-      .then( listingsArr => setListings(listingsArr))
-
+    fetchAPI()
   }, [])
+
+  const fetchAPI = () => {
+    fetch(`http://localhost:6001/listings`)
+    .then( r => r.json())
+    .then( listingsArr => setListings(listingsArr))
+  }
 
   const handleDelete = (id) => {
 
@@ -20,12 +27,21 @@ function App() {
 
   }
 
+  const handleSearch = () => {
+    const manipulatedArr = listings
+    if (searchTerm.length ) {
+    const filteredListings = manipulatedArr.filter( listing => listing.description.toLowerCase().includes(searchTerm.toLowerCase()))
+    setFilter(filteredListings)
+    } else { fetchAPI()}
+
+  }
+
 
 
   return (
     <div className="app">
-      <Header />
-      <ListingsContainer listings={listings} onDelete={handleDelete} />
+      <Header searchTerm={searchTerm} onSearch={setSearchTerm} handleSearch={handleSearch}/>
+      <ListingsContainer listings={searchTerm ? filter: listings} onDelete={handleDelete} />
     </div>
   );
 }
